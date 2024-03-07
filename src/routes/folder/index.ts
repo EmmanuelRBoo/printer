@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { authMiddleware } from '../../middlewares'
+import { authMiddleware, sharedFolder } from '../../middlewares'
 import { folder } from '../../controllers'
 
 const folderRouter = Router()
@@ -34,10 +34,13 @@ folderRouter.get('/share',
 )
 
 folderRouter.post('/share',
+    authMiddleware.isTokenCorrect,
+    sharedFolder.isAlreadyExistRelation,
     folder.shareFolder
 )
 
 folderRouter.delete('/share/:id', 
+    authMiddleware.isTokenCorrect,
     folder.removeShareFolder
 )
 

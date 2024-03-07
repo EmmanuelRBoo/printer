@@ -50,7 +50,7 @@ const removeFile = async (req: Request, res: Response) => {
 
         return res.status(204).json({ message: 'Arquivo removido com sucesso' })
     } catch (e) {
-        return res.status(500).json({ message: 'Houve um erro ao tentar remover o arquivo' })
+        return res.status(500).send('Houve um erro ao tentar remover o arquivo')
     }
 }
 
