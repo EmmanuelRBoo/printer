@@ -1,0 +1,354 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Processo seletivo - Printer",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://printer-p8u7.onrender.com/api/v1",
+            "description": "API base"
+        }
+    ],
+    "paths": {
+        "/auth/user/login": {
+            "post": {
+                "tags": ["User"],
+                "summary": "Login do usuário",
+                "description": "Realiza o login de um usuário cadastrado",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": { "type": "string" },
+                                "password": { "type": "string" }
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "/auth/user/register": {
+            "post": {
+                "tags": ["User"],
+                "summary": "Cadastro de usuários",
+                "description": "Realiza o cadastro de um usuário",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": { "type": "string" },
+                                "username": { "type": "string" },
+                                "password": { "type": "string" },
+                                "roleId": {"type": "number"}
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "/auth/user/permission/:id": {
+            "put": {
+                "tags": ["User"],
+                "summary": "Permissão do usuário",
+                "description": "Altera a permissão de um usuário",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "properties": {
+                                "id": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "permissions": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "/folder": {
+            "get": {
+                "tags": ["Folder"],
+                "summary": "Carrega todas as pastas",
+                "description": "Carrega todas as pastas do usuário (createdAt pode ser 'asc' ou 'desc')",
+                "parameters": [
+                    {
+                        "name": "folder",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "userId": {"type": "string"},
+                                "createdAt": {"type": "string"},
+                                "roleId": {"type":"number"}
+                            }
+                        }
+                    }
+                ]
+            },
+            "post": {
+                "tags": ["Folder"],
+                "summary": "Cria uma pasta",
+                "description": "Cria uma pasta para o usuário",
+                "parameters": [
+                    {
+                        "name": "folder",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "owner": {"type": "string"},
+                                "title": {"type": "string"}
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "/folder/:id": {
+            "put": {
+                "tags": ["Folder"],
+                "summary": "Edita título",
+                "description": "Altera o título de uma pasta",
+                "parameters": [
+                    {
+                        "name": "folder",
+                        "in": "path",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "properties": {
+                                "id": {"type": "string"}
+                            }
+                        }
+                    },
+                    {
+                        "name": "user",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "title": {"type": "string"}
+                            }
+                        }
+                    }
+                ]
+            },
+            "delete": {
+                "tags": ["Folder"],
+                "summary": "Remove uma pasta",
+                "description": "Remove uma pasta",
+                "parameters": [
+                    {
+                        "name": "folder",
+                        "in": "path",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "properties": {
+                                "id": {"type": "string"}
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "/folder/share": {
+            "get": {
+                "tags": ["Folder"],
+                "summary": "Carrega todas as pastas",
+                "description": "Carrega todas as pastas do usuário",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {"type": "string"},
+                                    "folderId": {"type": "string"},
+                                    "userId": {"type": "string"}
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "folder",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "folderId": {"type": "string"},
+                                "userId": {"type": "string"}
+                            }
+                        }
+                    }
+                ]
+            },
+            "post": {
+                "tags": ["Folder"],
+                "summary": "Cria um compartilhamento pasta/user",
+                "description": "Cria um compartilhamento pasta/user",
+                "parameters": [
+                    {
+                        "name": "folder",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "folderId": {"type": "string"},
+                                "userId": {"type": "string"}
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "/folder/share/:id": {
+            "delete": {
+                "tags": ["Folder"],
+                "summary": "Remove um compartilhamento pasta/user",
+                "description": "Remove um compartilhamento pasta/user",
+                "parameters": [
+                    {
+                        "name": "folder",
+                        "in": "path",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "properties": {
+                                "folderId": {"type": "string"}
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "/file": {
+            "post": {
+                "tags": ["File"],
+                "summary": "Cria um arquivo",
+                "description": "Cria um arquivo para o usuário",
+                "parameters": [
+                    {
+                        "name": "file",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "owner": {"type": "string"},
+                                "title": {"type": "string"},
+                                "roleId": {"type": "number"},
+                                "folderId" : {"type":"string"}
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "/file/:folderId": {
+            "get": {
+                "tags": ["File"],
+                "summary": "Carrega todos os arquivos",
+                "description": "Carrega todos os arquivos do usuário (createdAt pode ser 'asc' ou 'desc')",
+                "parameters": [
+                    {
+                        "name": "folder",
+                        "in": "path",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "properties": {
+                                "folderId": {"type": "string"}
+                            }
+                        }
+                    },
+                    {
+                        "name": "file",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "userId": {"type": "string"},
+                                "createdAt": {"type": "string"},
+                                "roleId": {"type":"number"}
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "/file/:id": {
+            "put": {
+                "tags": ["File"],
+                "summary": "Edita título",
+                "description": "Altera o título de um arquivoa",
+                "parameters": [
+                    {
+                        "name": "file",
+                        "in": "path",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "properties": {
+                                "id": {"type": "string"}
+                            }
+                        }
+                    },
+                    {
+                        "name": "file",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "title": {"type": "string"}
+                            }
+                        }
+                    }
+                ]
+            },
+            "delete": {
+                "tags": ["File"],
+                "summary": "Remove um arquivo",
+                "description": "Remove um arquivo",
+                "parameters": [
+                    {
+                        "name": "file",
+                        "in": "path",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid",
+                            "properties": {
+                                "id": {"type": "string"}
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

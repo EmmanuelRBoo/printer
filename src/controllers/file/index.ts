@@ -2,7 +2,8 @@ import { Request, Response } from 'express'
 import { file, admin } from '../../services'
 
 const getAllFiles = async (req: Request, res: Response) => {
-    const { userId, createdAt, folderId, roleId } = req.body
+    const { userId, createdAt, roleId } = req.body
+    const { folderId } = req.params
 
     try {
         const data = roleId == 0 ? await admin.getAdminFiles(folderId) : await file.getAllFiles({ createdAt, folderId, userId })

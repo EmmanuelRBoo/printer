@@ -6,7 +6,13 @@ const register = async (req: Request, res: Response) => {
     const { username, email, roleId, password } = req.body
 
     try {
-        await user.createUser({ username, email, roleId, password })
+        let permissions = ['read', 'write', 'delete']
+
+        if (roleId == 2) {
+            permissions = []
+        }
+
+        await user.createUser({ username, email, roleId, password, permissions })
 
         return res.status(201).json({ message: 'Usuário criado com sucesso' })
     } catch (e) {

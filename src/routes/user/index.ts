@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { user } from '../../controllers'
-import { userMiddleware } from '../../middlewares'
+import { userMiddleware, authMiddleware } from '../../middlewares'
 
 const userRouter = Router()
 
@@ -17,6 +17,7 @@ userRouter.post('/register',
 )
 
 userRouter.put('/permission/:id',
+    authMiddleware.isTokenCorrect,
     user.updatePermission
 )
 
